@@ -2,6 +2,7 @@ package com.Akoot.falcon.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -25,6 +26,26 @@ public class StringUtil
 		return data;
 	}
 	
+	public static String[] removeArg(String[] a, int index)
+	{
+		List<String> list = new LinkedList<String>(Arrays.asList(a));
+		list.remove(index);
+		return list.toArray(a);
+	}
+	
+	public static boolean isNan(String s)
+	{
+		try
+		{
+			Integer.parseInt(s);
+			return false;
+		}
+		catch (NumberFormatException e)
+		{
+			return true;
+		}
+	}
+	
 	public static String randomNumber(int min, int max)
 	{
 		Random random = new Random();
@@ -38,14 +59,21 @@ public class StringUtil
 		return n;
 	}
 	
-	public static List<String> removeFrom(String[] list, Object o)
+	public static String[] removeFrom(String[] a, String s)
 	{
-		return removeFrom(Arrays.asList(list), o);
+		List<String> list = new ArrayList<String>();
+		for(String str: a) if(str != s) list.add(str);
+		return list.toArray(new String[0]);
 	}
 	
-	public static List<String> removeFrom(List<String> list, Object o)
+	public static String[] removeFrom(String[] a, int index)
 	{
-		if(list.contains(o)) list.remove(list.indexOf(o));
+		return removeFrom(a, a[index]);
+	}
+	
+	public static List<String> removeFrom(List<String> list, String s)
+	{
+		if(list.contains(s)) list.remove(list.indexOf(s));
 		return list;
 	}
 
@@ -71,16 +99,17 @@ public class StringUtil
 		}
 		Pattern p = Pattern.compile("\"([^\"]*)\"");
 		Matcher m = p.matcher(data);
-		while (m.find())
-		{
-			list.add(m.group(1));
-		}
+		while (m.find()) list.add(m.group(1));
 		return list;
 	}
 	
-	public static String getArg(String data)
+	public static List<String> getArgs(String data)
 	{
-		return getRegex("--(\\w+) (\\w+)", data, 2);
+		List<String> list = new ArrayList<String>();
+		String regex = "\"([^\"]*)\"";
+		Matcher matcher = Pattern.compile(regex).matcher(data);
+		while(matcher.find()) list.add(matcher.group());
+		return list;
 	}
 
 	public static String getQuote(String data, int group)

@@ -7,12 +7,11 @@ import java.util.Scanner;
 import com.Akoot.falcon.user.User;
 import com.Akoot.falcon.user.Users;
 import com.Akoot.falcon.util.ChatColor;
-import com.Akoot.falcon.util.StringUtil;
 
 public class Falcon
 {
 	public static final String NAME = "Falcon";
-	public static final String VERSION = "0.0.5b";
+	public static final String VERSION = "0.0.6b";
 	
 	public static Scanner in;
 	public static Console console;
@@ -49,16 +48,6 @@ public class Falcon
 	{
 		if(args.length > 0)
 		{
-			if(Arrays.asList(args).contains("--username"))
-			{
-				String username = StringUtil.getArg(StringUtil.toString(args));
-				String password = "";
-				if(Arrays.asList(args).contains("--password"))
-				{
-					password = StringUtil.getArg(StringUtil.toString(args));
-				}
-				Users.login(username, password);
-			}
 		}
 	}
 

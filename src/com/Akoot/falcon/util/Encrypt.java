@@ -5,72 +5,55 @@ import java.io.File;
 public class Encrypt
 {
 	private String key;
-	
+
+	public Encrypt(String key)
+	{
+		this.key = key;
+	}
+
 	public Encrypt()
 	{
-		this.key = "abcdefghijklmnopqrstuvwxyz";
+		this("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
 	}
 	
-	public File encrypt(File file)
+	public void encrypt(File file)
 	{
-		String nm = file.getName();
+		String name = file.getName();
+		File parent = file.getParentFile();
+		String extension = name.contains(".") ? name.substring(name.indexOf(".")) : "";
+		name = extension.isEmpty() ? name : name.substring(0, name.indexOf("."));
+		String newName = name;
 		
-		if(!nm.contains(".")) System.out.println("Warning: " + nm + " does not have an extension!");
-		
-		String ext = (nm.contains(".") ? nm.substring(nm.indexOf(".") + 1) : "");
-		String name = (nm.contains(".") ? nm.substring(0, nm.indexOf(".")) : nm);
-
-		String newName = ext + name;
-		newName = encrypt(newName, name.length()) + ext.length();
+		if(extension.isEmpty()) newName = encrypt(name, name.length());
+		else newName = encrypt(extension, extension.length());
 		
 		FileUtil.rename(file, newName);
-
-		return new File(file.getParentFile(), newName);
 	}
 
-	public File decrypt(File file)
+	public void decrypt(File file)
 	{
-		String lastChar = file.getName().substring(file.getName().length() - 1, file.getName().length());
-		try
-		{
-			int i = Integer.parseInt(lastChar);
-			String ext = file.getName().substring(0, i);
-			String name = file.getName().substring(i, file.getName().indexOf(i + ""));
-
-			String newName = name + "." + ext;
-			newName = decrypt(newName, name.length());
-
-			FileUtil.rename(file, newName);
-
-			return new File(file.getParentFile(), newName);
-		}
-		catch (Exception e)
-		{
-			System.out.println("Error with " + file + ": " + lastChar + " is not a number");
-		}
-		return file;
+		String name = file.getName();
+		File parent = file.getParentFile();
+		String extension = "";
+		String newName = name;
+		
+		FileUtil.rename(file, newName + extension);
 	}
-	
+
 	public String encrypt(String msg, int index)
 	{
 		String encryption = "";
 		for(char c: msg.toCharArray())
 		{
 			int letter;
-			String ch = Character.toString(c).toLowerCase();
+			String ch = Character.toString(c);//.toLowerCase();
 			if(key.contains(ch))
 			{
 				letter = key.indexOf(ch) + index;
-				while(letter >= key.length())
-				{
-					letter -= key.length();
-				}
+				while(letter >= key.length()) letter -= key.length();
 				encryption += key.substring(letter, letter + 1);
 			}
-			else
-			{
-				encryption += ch;
-			}
+			else encryption += ch;
 		}
 		return encryption;
 	}
@@ -78,5 +61,15 @@ public class Encrypt
 	public String decrypt(String msg, int index)
 	{
 		return encrypt(msg, key.length() - index);
+	}
+	
+	public String getKey()
+	{
+		return this.key;
+	}
+	
+	public int getMax()
+	{
+		return this.key.length();
 	}
 }

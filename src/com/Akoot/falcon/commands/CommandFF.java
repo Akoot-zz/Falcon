@@ -2,7 +2,6 @@ package com.Akoot.falcon.commands;
 
 import java.io.File;
 
-import com.Akoot.falcon.Falcon;
 import com.Akoot.falcon.util.ChatColor;
 import com.Akoot.falcon.util.Encrypt;
 import com.Akoot.falcon.util.StringUtil;
@@ -19,7 +18,7 @@ public class CommandFF extends Command
 	{
 		if(args.length == 0)
 		{
-			//
+			sendUsage("<encrypt|decrypt> <from> [to]");
 		}
 		else if(args.length >= 1)
 		{
@@ -43,13 +42,14 @@ public class CommandFF extends Command
 				if(args[1].startsWith("\"")) ff(enc, new File(StringUtil.getQuote(StringUtil.toString(args), 0)));
 				else ff(enc, new File(args[1]));
 			}
-			else ff(enc, Falcon.dir);
+			//else ff(enc, Falcon.dir);
+			else trace("Cannot mess with the files");
 		}
 	}
 
 	private void ff(boolean enc, File source)
 	{
-		trace(ChatColor.PURPLE + (enc ? "en" : "de") + "crypting...");
+		trace(ChatColor.PURPLE + (enc ? "En" : "De") + "crypting...");
 		Encrypt e = new Encrypt();
 		if(!source.isDirectory())
 		{

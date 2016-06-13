@@ -13,10 +13,10 @@ public class Users
 {
 	public static User lastLoggedIn()
 	{
-		for(User u: getUsers())
-		{
-			if(u.getFile().getBoolean("logged-in")) return u;
-		}
+//		for(User u: getUsers())
+//		{
+//			if(u.getFile().getBoolean("logged-in")) return u;
+//		}
 		return new User("$");
 	}
 

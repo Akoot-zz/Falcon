@@ -32,6 +32,7 @@ public class Console
 		this.commands.add(new CommandDir());
 		this.commands.add(new CommandMove());
 		this.commands.add(new CommandRegister());
+		this.commands.add(new CommandShift());
 	}
 	
 	public void trace(String msg, Object... format)
